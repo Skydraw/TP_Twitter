@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body>
+<div>
+	<h1>Register or Login ? </h1>
+	<h3><a href=/users>List twitter users</a></h3>
+  <h2>Register</h2>
+  <form method="POST" action="/login"> 
+      <input name="action" type="hidden" value="register" />
+      <label>username</label><input name="username" type="text" value="" />
+	<br/>
+      <label>password</label><input name="password" type="password" value="" />
+	<br/>
+      <label>password (confirmation)</label><input name="password_check" type="password" value="" />
+	<br/>
+      <input type="submit" value="submit" />
+  </form>
+</div>
+<div>
+	<br/>
+  <h2>Login</h2>
+  <form method="POST" action="/login"> 
+      <input name="action" type="hidden" value="login" />
+      <label>username</label><input name="username" type="text" value="" />
+	<br/>
+      <label>password</label><input name="password" type="password" value="" />
+	<br/>
+      <input type="submit" value="submit" />
+  </form>
+</div>
+
+
+</body>
+</html>
+

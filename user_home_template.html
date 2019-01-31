@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+</head>
+<body>
+	<h1>Tweeter homepage for user %s</h1>
+
+	<h2><a href="/logout">logout</a></h2>
+  <h2>Compose tweet</h2>
+  <form method="POST" action="/home"> 
+      <input name="action" type="hidden" value="tweet_compose" />
+      <label>Tweet content</label><input name="tweet_content" type="text" value="" />
+	<br/>
+      <input type="submit" value="submit" />
+  </form>
+
+  <iframe id="cut"
+    title="Current user tweets"
+    width="300"
+    height="500"
+    src="/user?id=%s">
+</iframe>
+
+
+</body>
+</html>
+
