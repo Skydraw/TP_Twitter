@@ -51,4 +51,8 @@ Par exemple, l'ajout de " 'OR 1=1-- " permet d'afficher tous les tweets disponib
  => cela nous indique que des commandes SQL ou SQLite (en l'occurennce) est possible. 
  
  Si l'on oubli la discretion, un sqlmap de cette url permet de remonter l'ensemble des données dans la BDD. 
+ 
+ '''javascript
+ sqlmap -u "http://192.168.XXX.XXX/user?id=X" --dump
+ '''
 
