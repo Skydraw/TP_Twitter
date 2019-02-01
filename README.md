@@ -27,10 +27,13 @@ else:
 
 **Injection XSS**
 
-[X] XSS dans le champs tweet
-<script>document.write(document.cookie)</script>
+[X] XSS dans le champs tweet  
 
+```javascript
+<script>document.write(document.cookie)</script>
+```
 **Reutilisation de cookies utilisateurs**
+
 1: Récupération du cookie de l'utilisateurN.
 
 2: Création de tweet avec utilisateurX
