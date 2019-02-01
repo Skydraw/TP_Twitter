@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"html"
 	"html/template"
 	"log"
 	"net/http"
@@ -61,9 +62,6 @@ func main() {
 
 func checkErr(w http.ResponseWriter, r *http.Request, err error) bool {
 	if err != nil {
-
-		fmt.Println(r.Host + r.URL.Path)
-
 		http.Redirect(w, r, r.Host+r.URL.Path, 301)
 		return false
 	}
@@ -141,7 +139,7 @@ func newTweet(w http.ResponseWriter, r *http.Request) {
 
 	stmt, err := db.Prepare("INSERT INTO tweets SET userID=?, tweet=?")
 	if err == nil {
-		_, err := stmt.Exec(id, tweet)
+		_, err := stmt.Exec(id, html.EscapeString(tweet))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
