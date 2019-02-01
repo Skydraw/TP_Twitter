@@ -44,6 +44,7 @@ else:
 
 
 **Injection SQL**
+
 Lorsque que l'on accede à la page des tweets postés par un user,l'url "http://192.168.XXX.XXX/user?id=X" comporte une faille dans les valeurs passées dans "id". 
 
 Par exemple, l'ajout de " 'OR 1=1-- " permet d'afficher tous les tweets disponible dans la base de données
