@@ -12,3 +12,13 @@
 ```go
 _, err := stmt.Exec(id, html.EscapeString(tweet))
 ```
+
+**Partie Python**
+[X] Injection SQL dans la requête user?id=1 : *patché*
+```python
+try:
+ i = int(UserID)
+  ...
+else:
+ return None
+```
