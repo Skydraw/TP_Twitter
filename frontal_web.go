@@ -55,7 +55,7 @@ func loginRedirector(w http.ResponseWriter, req *http.Request) {
 
 func getUserNameFromUserid(userId string) string {
 	ret := ""
-	cmd := exec.Command("tp", "userName", userId)
+	cmd := exec.Command("python" , "tp.py", "-f" , "get_user_name" , "-i" , userId)
 	log.Println("getting user name by calling : tp userName", userId)
 	out, err := cmd.CombinedOutput()
 	if err == nil && out != nil {
@@ -66,25 +66,24 @@ func getUserNameFromUserid(userId string) string {
 
 func getTweetsForUserid(userId string) string {
 	ret := ""
-	cmd := exec.Command("tp", "listTweetsForUserId", userId)
+	cmd := exec.Command("python", "tp.py" ,"-f", "list_tweet_for_user_ids", "-i", userId)
 	log.Println("listing tweets by calling : tp listTweetsForUserId", userId)
 	out, err := cmd.CombinedOutput()
 	if err == nil && out != nil {
 		ret += string(out)
-	}
+    }
 	return ret
 }
 
 func recordNewTweet(userId string, tweetContent string) {
-	cmd := fmt.Sprintf("\"./tp recordNewTweet %s %s\"", userId, tweetContent)
-	cmde := exec.Command("/bin/sh", "-c", cmd)
+	cmde := exec.Command("python" , "tp.py", "-f" ,"register_tweet" , "-i", userId, "-t" ,tweetContent)
 	log.Println("recording new tweets by calling :", "tp", "recordNewTweet", userId, tweetContent)
 	_, _ = cmde.CombinedOutput()
 }
 
 func getUserIdFromSession(session_token string) string {
 	ret := ""
-	cmd := exec.Command("tp", "userIdFromSession", session_token)
+	cmd := exec.Command("python", "tp.py" , "-f" , "get_userId_from_session" , "-c" , session_token)
 	log.Println("getting user name by calling : tp userIdFromSession", session_token)
 	out, err := cmd.CombinedOutput()
 	if err == nil && out != nil {
@@ -96,11 +95,11 @@ func getUserIdFromSession(session_token string) string {
 func listUsers(w http.ResponseWriter, req *http.Request) {
 	htmlUserList := ""
 
-	cmd := exec.Command("tp", "listUserIdComaSeparated")
+	cmd := exec.Command("python" , "tp.py", "-f" ,"get_list_userId")
 	log.Println("listing user by calling : tp listUserIdComaSeparated")
 	out, err := cmd.CombinedOutput()
-	if err == nil && out != nil {
-		userids := strings.Split(string(out), ",")
+	if err == nil && out != nil {		
+        userids := strings.Split(string(out), ",")
 		log.Printf("[listUsers] %v",userids)
 		for _, userid := range userids {
 			//get username
@@ -143,7 +142,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 			if password == passwordCheck {
 				log.Println("registration using : tp register", username, password)
 				log.Println("tp register should return session token for this new user or session token for already registered user")
-				cmd := exec.Command("tp", "register", username, password)
+				cmd := exec.Command("python" , "tp.py", "-f", "register", "-u" , username, "-p" , password)
 				out, err := cmd.CombinedOutput()
 				if err == nil && out != nil && len(string(out)) > 0 {
 					setSessionTokenCookie(&w, string(out), req)
@@ -162,7 +161,7 @@ func login(w http.ResponseWriter, req *http.Request) {
 			password := req.FormValue("password")
 			log.Println("login using : tp login", username, password)
 			log.Println("tp login should return session token for this existing user or nothing if there is no user with those credentials")
-			cmd := exec.Command("tp", "login", username, password)
+			cmd := exec.Command("python", "tp.py" , "-f", "login", "-u", username, "-p", password)
 			out, err := cmd.CombinedOutput()
 			if err == nil && out != nil && len(string(out)) > 0 {
 				setSessionTokenCookie(&w, string(out), req)
@@ -247,7 +246,7 @@ func defineRoutes() {
 
 // Point d'entrée de l'interface en ligne de commande du serveur web
 func main() {
-	port := flag.String("p", "127.0.0.1:8100", "host:port to serve on")
+	port := flag.String("p", "0.0.0.0:8100", "host:port to serve on")
 	// directory := flag.String("d", ".", "the directory of static file to host")
 	flag.Parse()
 

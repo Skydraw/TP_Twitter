@@ -69,7 +69,7 @@ def main(args):
         tweet_content = args.register_tweet[1+args.register_tweet.index(":"):]
         c.execute("insert into `tweets`('UserID', 'tweet', 'date') VALUES('{}','{}', datetime('now'));".format(userid, tweet_content ))
         conn.commit()
-    elif(args.get_tweet_content):
+    elif(args.get_tweet_content):se
         c2 = c.execute("select tweet,TweetId from `tweets` WHERE TweetId ='{}';".format(args.get_tweet_content))
         res = c2.fetchall()
         if(len(res) > 0):
