@@ -8,7 +8,7 @@
 
 **Soucis côté golang**
 
-[X] Potentiel injection SQL dans la saisie d'un tweet : *patché*
+[X] Potentiel injection SQL dans la saisie d'un tweet : Patch de toutes les entrées utilisateurs avec html.EscapeString
 ```go
 _, err := stmt.Exec(id, html.EscapeString(tweet))
 ```
