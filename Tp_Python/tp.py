@@ -135,13 +135,19 @@ def get_user_password(UserID):
     conn.close()
 
 def get_user_name(UserID):
-    conn, c = initdb()
-    c2 = c.execute("select login,UserID from `users` WHERE UserID ='{}';".format(UserID))
-    res = c2.fetchall()
-    if(len(res) > 0):
-        return "{}".format(res[0][0])
-    conn.close()
-    
+
+    try:
+        i = int(UserID)
+        conn, c = initdb()
+        c2 = c.execute("select login,UserID from `users` WHERE UserID ='{}';".format(UserID))
+        res = c2.fetchall()
+        if(len(res) > 0):
+            return "{}".format(res[0][0])
+        conn.close()
+    except:
+        return None
+
+
 def get_user_id(username):
     conn, c = initdb()
     c2 = c.execute("select UserID, login from `users` WHERE login ='{}';".format(username))
@@ -192,15 +198,17 @@ def get_tweet_userid(TweetID):
         return "{}".format(res[0][0])
     conn.close()
 
-
 def list_tweet_for_user_ids(UserID):
-    conn, c = initdb()
-    c2 = c.execute("select tweet from `tweets` WHERE UserID='{}';".format(UserID))
-    res = c2.fetchall()
-    if(len(res) > 0):
-        return "\n".join(map(lambda v:"{}".format(v[0]),res))
-    conn.close()
-    
+    try:
+        i = int(UserID)
+        conn, c = initdb()
+        c2 = c.execute("select tweet from `tweets` WHERE UserID='{}';".format(UserID))
+        res = c2.fetchall()
+        if(len(res) > 0):
+            return "\n".join(map(lambda v:"{}".format(v[0]),res))
+        conn.close()
+    except:
+        return None
 
 def printIfNotNone(content):
     if (content):
