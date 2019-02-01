@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -125,7 +126,7 @@ func newTweet(w http.ResponseWriter, r *http.Request) {
 	tweet := r.FormValue("tweet")
 	username := session.GetString("username")
 
-	userID, err := db.Query("SELECT id FROM users WHERE username = ?", username)
+	userID, err := db.Query("SELECT id FROM users WHERE username = ?", html.EscapeString(username))
 
 	if err == nil {
 		for userID.Next() {
@@ -155,10 +156,10 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username := r.FormValue("username")
-	firstName := r.FormValue("first_name")
-	lastName := r.FormValue("last_name")
-	password := r.FormValue("password")
+	username := html.EscapeString(r.FormValue("username"))
+	firstName := html.EscapeString(r.FormValue("first_name"))
+	lastName := html.EscapeString(r.FormValue("last_name"))
+	password := html.EscapeString(r.FormValue("password"))
 
 	users := queryUser(username)
 
@@ -188,12 +189,13 @@ func login(w http.ResponseWriter, r *http.Request) {
 	if len(session.GetString("username")) != 0 && checkErr(w, r, err) {
 		http.Redirect(w, r, "/", 302)
 	}
+
 	if r.Method != "POST" {
 		http.ServeFile(w, r, "views/login.html")
 		return
 	}
-	username := r.FormValue("username")
-	password := r.FormValue("password")
+	username := html.EscapeString(r.FormValue("username"))
+	password := html.EscapeString(r.FormValue("password"))
 
 	users := queryUser(username)
 
@@ -202,13 +204,13 @@ func login(w http.ResponseWriter, r *http.Request) {
 	if passwordTest == nil {
 		session := sessions.Start(w, r)
 		session.Set("username", users.Username)
-		session.Set("name", users.FirstName)
+		//AntiBruteforce du pauvre = pas de clé reCaptcha
+		time.Sleep(1 * time.Second)
 		http.Redirect(w, r, "/", 302)
 	} else {
 		http.Redirect(w, r, "/wrongLogins", 302)
 		//http.Redirect(w, r, "/login", 302)
 	}
-
 }
 
 func listUsers(w http.ResponseWriter, r *http.Request) {
@@ -233,7 +235,7 @@ func listTweets(w http.ResponseWriter, r *http.Request) {
 	var tweet string
 	var userTweet []string
 
-	userID, err := db.Query("SELECT id FROM users WHERE username = ?", users[0])
+	userID, err := db.Query("SELECT id FROM users WHERE username = ?", html.EscapeString(users[0]))
 
 	if err == nil {
 		for userID.Next() {
