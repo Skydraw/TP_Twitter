@@ -13,7 +13,7 @@
 _, err := stmt.Exec(id, html.EscapeString(tweet))
 ```
 
-**Partie Python**
+**Partie Python**  
 [X] Injection SQL dans la requête user?id=1 : *patché*
 ```python
 try:
@@ -22,3 +22,22 @@ try:
 else:
  return None
 ```
+
+
+
+**Injection XSS**
+
+[X] XSS dans le champs tweet
+<script>document.write(document.cookie)</script>
+
+**Reutilisation de cookies utilisateurs**
+1: Récupération du cookie de l'utilisateurN.
+
+2: Création de tweet avec utilisateurX
+
+3: Avec burp incrementation du cookie de l'utilisateur N dans la requete de création de tweet de l'utilisateurX
+
+4: Poste du tweet avec la session de l'utilisateurN
+
+
+
